@@ -10,58 +10,80 @@ class SignUpScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Background(
-      child: SingleChildScrollView(
-        child: Responsive(
-          mobile: MobileSignupScreen(),
-          desktop: Row(
-            children: [
-              Expanded(
-                child: SignUpScreenTopImage(),
-              ),
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      width: 450,
-                      child: SignUpForm(),
-                    ),
-                    SizedBox(height: defaultPadding / 2),
-                    // SocalSignUp()
-                  ],
-                ),
-              )
-            ],
-          ),
-        ),
+    return Background(
+      child: Responsive(
+        mobile: MobileSignupScreen(),
+        desktop: DesktopSignupScreen(),
       ),
     );
   }
 }
 
 class MobileSignupScreen extends StatelessWidget {
-  const MobileSignupScreen({
-    Key? key,
-  }) : super(key: key);
+  const MobileSignupScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        SignUpScreenTopImage(),
-        Row(
-          children: [
-            Spacer(),
-            Expanded(
-              flex: 8,
-              child: SignUpForm(),
+    return Scaffold(
+      resizeToAvoidBottomInset: true,
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          return SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minHeight: constraints.maxHeight),
+              child: Padding(
+                padding: EdgeInsets.only(
+                  left: defaultPadding,
+                  right: defaultPadding,
+                  bottom: MediaQuery.of(context)
+                      .viewInsets
+                      .bottom, // Adjust for keyboard
+                ),
+                child: IntrinsicHeight(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      SignUpScreenTopImage(),
+                      SignUpForm(),
+                      SizedBox(height: defaultPadding / 2),
+                      // SocalSignUp()
+                    ],
+                  ),
+                ),
+              ),
             ),
-            Spacer(),
-          ],
+          );
+        },
+      ),
+    );
+  }
+}
+
+class DesktopSignupScreen extends StatelessWidget {
+  const DesktopSignupScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        const Expanded(
+          child: SignUpScreenTopImage(),
         ),
-        // const SocalSignUp()
+        Expanded(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                SizedBox(
+                  width: 450,
+                  child: SignUpForm(),
+                ),
+                SizedBox(height: defaultPadding / 2),
+                // SocalSignUp()
+              ],
+            ),
+          ),
+        )
       ],
     );
   }
