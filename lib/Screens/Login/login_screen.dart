@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:personal_finance_tracker/constants.dart';
 import 'package:personal_finance_tracker/responsive.dart';
-
 import '../../components/background.dart';
 import 'components/login_form.dart';
 import 'components/login_screen_top_image.dart';
@@ -81,9 +80,9 @@ class DesktopLoginScreen extends StatelessWidget {
                 width: 450,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
+                  children: [
                     LoginForm(),
-                    SizedBox(height: defaultPadding / 2),
+                    const SizedBox(height: defaultPadding / 2),
                     // Additional widgets can be added here
                   ],
                 ),

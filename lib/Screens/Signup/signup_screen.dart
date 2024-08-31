@@ -73,12 +73,12 @@ class DesktopSignupScreen extends StatelessWidget {
           child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
+              children: [
                 SizedBox(
                   width: 450,
                   child: SignUpForm(),
                 ),
-                SizedBox(height: defaultPadding / 2),
+                const SizedBox(height: defaultPadding / 2),
                 // SocalSignUp()
               ],
             ),
