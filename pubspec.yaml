@@ -50,7 +50,10 @@ dependencies:
   #login thing
   shared_preferences: ^2.3.2
   flutter_facebook_auth: ^7.1.0
-  
+  cached_network_image: ^3.4.0
+  progress_dialog:
+    git:
+      url: https://github.com/mostafaAbdelazim/progress_dialog.git
 
 dev_dependencies:
   flutter_test:

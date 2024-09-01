@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:personal_finance_tracker/Screens/Home/home_page_screen.dart';
+import 'package:personal_finance_tracker/model/user.dart';
+import 'package:personal_finance_tracker/services/auth_service.dart';
 
 import '../../../components/already_have_an_account_acheck.dart';
 import '../../../constants.dart';
@@ -16,6 +19,25 @@ class LoginForm extends StatefulWidget {
 class _LoginFormState extends State<LoginForm> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  void _login() async {
+    String email = _emailController.text.trim();
+    String password = _passwordController.text.trim();
+
+    var result = await AuthService.loginWithEmailAndPassword(email, password);
+
+    if (result is User) {
+      // Giriş başarılı, ana sayfaya yönlendirme
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HomePage()),
+      );
+    } else {
+      // Hata durumunu göster
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(result)));
+    }
+  }
 
   @override
   void dispose() {
@@ -64,6 +86,7 @@ class _LoginFormState extends State<LoginForm> {
             onPressed: () {
               print(_emailController.text);
               print(_passwordController.text);
+              _login();
             },
             child: Text(
               "Login".toUpperCase(),
