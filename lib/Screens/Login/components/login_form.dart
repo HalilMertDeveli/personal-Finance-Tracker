@@ -48,6 +48,9 @@ class _LoginFormState extends State<LoginForm> {
 
   @override
   Widget build(BuildContext context) {
+    MediaQueryData media = MediaQuery.of(context);
+    final Size screenSize = media.size;
+
     return Form(
       child: Column(
         children: [
@@ -79,6 +82,63 @@ class _LoginFormState extends State<LoginForm> {
                   child: Icon(Icons.lock),
                 ),
               ),
+            ),
+          ),
+          new Container(
+            width: screenSize.width,
+            child: new Column(
+              children: <Widget>[
+                new Container(
+                  margin: const EdgeInsets.only(left: 10.0, top: 20.0),
+                  child: new Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      new Container(
+                        height: 50.0,
+                        width: 210.0,
+                        child: new ElevatedButton.icon(
+                            label: new Text(
+                              'Login with Google+',
+                              style: new TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                            icon: new Image.asset("assets/google_plus.png",
+                                width: 24.0, height: 24.0),
+                            onPressed: () => print("Hello world google")),
+                      ),
+                    ],
+                  ),
+                ),
+                new Container(
+                  margin: const EdgeInsets.only(left: 10.0, top: 20.0),
+                  child: new Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      new Container(
+                        height: 50.0,
+                        width: 210.0,
+                        child: new ElevatedButton.icon(
+                          label: new Text(
+                            'Login with Facebook',
+                            style: new TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                          icon: new Image.asset(
+                            "assets/facebook.png",
+                            width: 24.0,
+                            height: 24.0,
+                          ),
+                          // icon: const Icon(Icons.adjust, size: 28.0,color: Colors.white),
+
+                          onPressed: () => print("Hello world facebook"),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
             ),
           ),
           const SizedBox(height: defaultPadding),

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>1020283409245-hrfpl5ghmoqbo2ego8nbkuu6mcpgc5f6.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.1020283409245-hrfpl5ghmoqbo2ego8nbkuu6mcpgc5f6</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>1020283409245-63h8teer32kn2grs98dalqei970vu590.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBW7DKH9yAe_TBE6O8-Ge0ZL7xZG1686ow</string>
+	<key>GCM_SENDER_ID</key>
+	<string>1020283409245</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.personalFinanceTracker</string>
+	<key>PROJECT_ID</key>
+	<string>personalfinancetracker-b2339</string>
+	<key>STORAGE_BUCKET</key>
+	<string>personalfinancetracker-b2339.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:1020283409245:ios:3c4c410c37cb05b5f4ceb4</string>
+</dict>
+</plist>

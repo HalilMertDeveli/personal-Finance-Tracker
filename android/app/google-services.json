@@ -12,7 +12,20 @@
           "package_name": "com.example.personal_finance_tracker"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "1020283409245-63h8teer32kn2grs98dalqei970vu590.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.personal_finance_tracker",
+            "certificate_hash": "9270c7564c950fb88ca940d167a14b4ab6c82ab1"
+          }
+        },
+        {
+          "client_id": "1020283409245-nfvrvvna3r6m71f1v8r8l0034q012mqb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyATvzxsQtL5icOGcnTpsXiHL_5N2B_ofFQ"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1020283409245-nfvrvvna3r6m71f1v8r8l0034q012mqb.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1020283409245-hrfpl5ghmoqbo2ego8nbkuu6mcpgc5f6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.personalFinanceTracker"
+              }
+            }
+          ]
         }
       }
     }
