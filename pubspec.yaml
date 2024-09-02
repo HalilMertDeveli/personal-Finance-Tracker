@@ -47,6 +47,7 @@ dependencies:
   the_apple_sign_in: ^1.1.1
   flutter_facebook_auth: ^7.1.0
   google_sign_in: ^6.2.1
+  
 
   #util
   flutter_svg: ^2.0.10+1
