@@ -6,6 +6,7 @@ import 'package:personal_finance_tracker/services/auth_service.dart';
 import '../../../components/already_have_an_account_acheck.dart';
 import '../../../constants.dart';
 import '../../Login/login_screen.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
 class SignUpForm extends StatefulWidget {
   SignUpForm({
@@ -170,21 +171,31 @@ class _SignUpFormState extends State<SignUpForm> {
                           height: 50.0,
                           width: 210.0,
                           child: new ElevatedButton.icon(
-                            label: new Text(
-                              'Login with Facebook',
-                              style: new TextStyle(
-                                color: Colors.white,
+                              label: new Text(
+                                'Login with Facebook',
+                                style: new TextStyle(
+                                  color: Colors.white,
+                                ),
                               ),
-                            ),
-                            icon: new Image.asset(
-                              "assets/facebook.png",
-                              width: 24.0,
-                              height: 24.0,
-                            ),
-                            // icon: const Icon(Icons.adjust, size: 28.0,color: Colors.white),
+                              icon: new Image.asset(
+                                "assets/facebook.png",
+                                width: 24.0,
+                                height: 24.0,
+                              ),
+                              // icon: const Icon(Icons.adjust, size: 28.0,color: Colors.white),
 
-                            onPressed: () => print("Hello world facebook"),
-                          ),
+                              onPressed: () async {
+                                final LoginResult result =
+                                    await FacebookAuth.instance.login();
+                                if (result.status == LoginStatus.success) {
+                                  // you are logged
+                                  final AccessToken accessToken =
+                                      result.accessToken!;
+                                } else {
+                                  print(result.status);
+                                  print(result.message);
+                                }
+                              }),
                         ),
                       ],
                     ),
