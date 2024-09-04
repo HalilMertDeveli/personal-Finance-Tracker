@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:personal_finance_tracker/Screens/Home/home_page_screen.dart';
 import 'package:personal_finance_tracker/model/user.dart';
 import 'package:personal_finance_tracker/services/auth_service.dart';
+import 'package:personal_finance_tracker/services/google/google_sign_in_screen.dart';
 import '../../../components/already_have_an_account_acheck.dart';
 import '../../../constants.dart';
 import '../../Login/login_screen.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class SignUpForm extends StatefulWidget {
   SignUpForm({
@@ -22,6 +24,9 @@ class _SignUpFormState extends State<SignUpForm> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
+
+  ValueNotifier userCredential = ValueNotifier('');
+
   Uint8List? _imageData;
 
   void _register() async {
@@ -149,20 +154,28 @@ class _SignUpFormState extends State<SignUpForm> {
                           height: 50.0,
                           width: 210.0,
                           child: new ElevatedButton.icon(
-                              label: new Text(
-                                'Login with Google+',
-                                style: new TextStyle(
-                                  color: Colors.white,
-                                ),
+                            label: new Text(
+                              'Login with Google+',
+                              style: new TextStyle(
+                                color: Colors.white,
                               ),
-                              icon: new Image.asset("assets/google_plus.png",
-                                  width: 24.0, height: 24.0),
-                              onPressed: () => print("Hello world google")),
+                            ),
+                            icon: new Image.asset("assets/google_plus.png",
+                                width: 24.0, height: 24.0),
+                            onPressed: () {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => GoogleSignInScreen(),
+                                ),
+                              );
+                            },
+                          ),
                         ),
                       ],
                     ),
                   ),
-                  new Container(
+                  Container(
                     margin: const EdgeInsets.only(left: 10.0, top: 20.0),
                     child: new Row(
                       mainAxisAlignment: MainAxisAlignment.center,
