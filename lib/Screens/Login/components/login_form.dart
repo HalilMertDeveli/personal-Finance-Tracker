@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:personal_finance_tracker/Screens/Home/home_page_screen.dart';
 import 'package:personal_finance_tracker/model/user.dart';
 import 'package:personal_finance_tracker/services/auth_service.dart';
+import 'package:personal_finance_tracker/services/google/google_service.dart';
 
 import '../../../components/already_have_an_account_acheck.dart';
 import '../../../constants.dart';
@@ -19,6 +21,7 @@ class LoginForm extends StatefulWidget {
 class _LoginFormState extends State<LoginForm> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  ValueNotifier userCredential = ValueNotifier('');
 
   void _login() async {
     String email = _emailController.text.trim();
@@ -105,7 +108,18 @@ class _LoginFormState extends State<LoginForm> {
                             ),
                             icon: new Image.asset("assets/google_plus.png",
                                 width: 24.0, height: 24.0),
-                            onPressed: () => print("Hello world google")),
+                            onPressed: () async {
+                              userCredential.value = await signInWithGoogle();
+                              if (userCredential.value != null) {
+                                print(userCredential.value.user!.email);
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => HomePage(),
+                                  ),
+                                );
+                              }
+                            }),
                       ),
                     ],
                   ),
@@ -132,7 +146,24 @@ class _LoginFormState extends State<LoginForm> {
                           ),
                           // icon: const Icon(Icons.adjust, size: 28.0,color: Colors.white),
 
-                          onPressed: () => print("Hello world facebook"),
+                          onPressed: () async {
+                            final LoginResult result =
+                                await FacebookAuth.instance.login();
+                            if (result.status == LoginStatus.success) {
+                              // you are logged
+                              final AccessToken accessToken =
+                                  result.accessToken!;
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => HomePage(),
+                                ),
+                              );
+                            } else {
+                              print(result.status);
+                              print(result.message);
+                            }
+                          },
                         ),
                       ),
                     ],

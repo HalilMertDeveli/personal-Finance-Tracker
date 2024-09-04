@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:personal_finance_tracker/Screens/Home/home_page_screen.dart';
 import 'package:personal_finance_tracker/model/user.dart';
 import 'package:personal_finance_tracker/services/auth_service.dart';
-import 'package:personal_finance_tracker/services/google/google_sign_in_screen.dart';
+import 'package:personal_finance_tracker/services/google/google_service.dart';
 import '../../../components/already_have_an_account_acheck.dart';
 import '../../../constants.dart';
 import '../../Login/login_screen.dart';
@@ -155,20 +155,31 @@ class _SignUpFormState extends State<SignUpForm> {
                           width: 210.0,
                           child: new ElevatedButton.icon(
                             label: new Text(
-                              'Login with Google+',
+                              'sign up with Google+',
                               style: new TextStyle(
                                 color: Colors.white,
                               ),
                             ),
                             icon: new Image.asset("assets/google_plus.png",
                                 width: 24.0, height: 24.0),
-                            onPressed: () {
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => GoogleSignInScreen(),
-                                ),
-                              );
+                            onPressed: () async {
+                              // Navigator.pushReplacement(
+                              //   context,
+                              //   MaterialPageRoute(
+                              //     builder: (context) => GoogleSignInScreen(),
+                              //   ),
+                              // );
+
+                              userCredential.value = await signInWithGoogle();
+                              if (userCredential.value != null) {
+                                print(userCredential.value.user!.email);
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => HomePage(),
+                                  ),
+                                );
+                              }
                             },
                           ),
                         ),
