@@ -2,10 +2,13 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:personal_finance_tracker/Screens/Welcome/welcome_screen.dart';
 import 'package:personal_finance_tracker/constants.dart';
+import 'package:personal_finance_tracker/firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   return runApp(
     const MyApp(),

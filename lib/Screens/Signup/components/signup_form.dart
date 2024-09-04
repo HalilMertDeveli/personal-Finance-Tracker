@@ -185,12 +185,19 @@ class _SignUpFormState extends State<SignUpForm> {
                               // icon: const Icon(Icons.adjust, size: 28.0,color: Colors.white),
 
                               onPressed: () async {
+                                //TODO: Burada yönlendirme işlemin yapacaksın ana sayfaya
                                 final LoginResult result =
                                     await FacebookAuth.instance.login();
                                 if (result.status == LoginStatus.success) {
                                   // you are logged
                                   final AccessToken accessToken =
                                       result.accessToken!;
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => HomePage(),
+                                    ),
+                                  );
                                 } else {
                                   print(result.status);
                                   print(result.message);

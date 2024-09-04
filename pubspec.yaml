@@ -41,7 +41,7 @@ dependencies:
   firebase_auth: ^5.2.0
   cloud_firestore: ^5.3.0
   firebase_storage: ^12.2.0
-  
+  firebase_ui_auth: ^1.15.0
 
   #Auth
   the_apple_sign_in: ^1.1.1
@@ -59,6 +59,7 @@ dependencies:
     git:
       url: https://github.com/mostafaAbdelazim/progress_dialog.git
   flutter_facebook_auth: ^7.1.0
+  
   
 
 dev_dependencies:
