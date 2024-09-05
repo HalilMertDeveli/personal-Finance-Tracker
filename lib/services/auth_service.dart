@@ -19,9 +19,9 @@ class AuthService {
           .collection(usersCollection)
           .doc(result.user?.uid ?? '')
           .get();
-      User? user;
+      UserModel? user;
       if (documentSnapshot.exists) {
-        user = User.fromJson(documentSnapshot.data() ?? {});
+        user = UserModel.fromJson(documentSnapshot.data() ?? {});
       }
       return user;
     } on auth.FirebaseAuthException catch (exception, s) {
@@ -61,7 +61,7 @@ class AuthService {
         profilePicUrl =
             await uploadUserImageToServer(imageData, result.user?.uid ?? '');
       }
-      User user = User(
+      UserModel user = UserModel(
           email: emailAddress,
           firstName: firstName,
           userID: result.user?.uid ?? '',
@@ -100,7 +100,7 @@ class AuthService {
     }
   }
 
-  static Future<String?> createNewUser(User user) async => await firestore
+  static Future<String?> createNewUser(UserModel user) async => await firestore
       .collection(usersCollection)
       .doc(user.userID)
       .set(user.toJson())
@@ -114,5 +114,19 @@ class AuthService {
     var downloadUrl =
         await (await uploadTask.whenComplete(() {})).ref.getDownloadURL();
     return downloadUrl.toString();
+  }
+
+  Future<void> saveUserToFirestore(UserModel user) {
+    CollectionReference users = FirebaseFirestore.instance.collection("users");
+
+    return users
+        .add({
+          "email": user.email,
+          "firstName": user.firstName,
+          "lastName": user.lastName,
+          "profilePictureURL": user.profilePictureURL,
+        })
+        .then((value) => print("User added successfully!"))
+        .catchError((error) => print("Failed to add user: $error"));
   }
 }

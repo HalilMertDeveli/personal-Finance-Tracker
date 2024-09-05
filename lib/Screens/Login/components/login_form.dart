@@ -29,14 +29,12 @@ class _LoginFormState extends State<LoginForm> {
 
     var result = await AuthService.loginWithEmailAndPassword(email, password);
 
-    if (result is User) {
-      // Giriş başarılı, ana sayfaya yönlendirme
+    if (result is UserModel) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => HomePage()),
       );
     } else {
-      // Hata durumunu göster
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text(result)));
     }
@@ -144,13 +142,10 @@ class _LoginFormState extends State<LoginForm> {
                             width: 24.0,
                             height: 24.0,
                           ),
-                          // icon: const Icon(Icons.adjust, size: 28.0,color: Colors.white),
-
                           onPressed: () async {
                             final LoginResult result =
                                 await FacebookAuth.instance.login();
                             if (result.status == LoginStatus.success) {
-                              // you are logged
                               final AccessToken accessToken =
                                   result.accessToken!;
                               Navigator.pushReplacement(

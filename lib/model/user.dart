@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 
-class User {
+class UserModel {
   String email;
 
   String firstName;
@@ -14,7 +14,7 @@ class User {
 
   String appIdentifier;
 
-  User(
+  UserModel(
       {this.email = '',
       this.firstName = '',
       this.lastName = '',
@@ -25,8 +25,8 @@ class User {
 
   String fullName() => '$firstName $lastName';
 
-  factory User.fromJson(Map<String, dynamic> parsedJson) {
-    return User(
+  factory UserModel.fromJson(Map<String, dynamic> parsedJson) {
+    return UserModel(
         email: parsedJson['email'] ?? '',
         firstName: parsedJson['firstName'] ?? '',
         lastName: parsedJson['lastName'] ?? '',

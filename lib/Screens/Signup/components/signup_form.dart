@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:personal_finance_tracker/Screens/Home/home_page_screen.dart';
 import 'package:personal_finance_tracker/model/user.dart';
@@ -8,7 +9,6 @@ import '../../../components/already_have_an_account_acheck.dart';
 import '../../../constants.dart';
 import '../../Login/login_screen.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
 class SignUpForm extends StatefulWidget {
   SignUpForm({
@@ -28,6 +28,8 @@ class _SignUpFormState extends State<SignUpForm> {
   ValueNotifier userCredential = ValueNotifier('');
 
   Uint8List? _imageData;
+
+  final authService = new AuthService();
 
   void _register() async {
     String email = _emailController.text.trim();
@@ -51,7 +53,6 @@ class _SignUpFormState extends State<SignUpForm> {
         ),
       );
     } else {
-      // Hata durumunu göster
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text(result)));
     }
@@ -163,22 +164,37 @@ class _SignUpFormState extends State<SignUpForm> {
                             icon: new Image.asset("assets/google_plus.png",
                                 width: 24.0, height: 24.0),
                             onPressed: () async {
-                              // Navigator.pushReplacement(
-                              //   context,
-                              //   MaterialPageRoute(
-                              //     builder: (context) => GoogleSignInScreen(),
-                              //   ),
-                              // );
-
                               userCredential.value = await signInWithGoogle();
+
                               if (userCredential.value != null) {
-                                print(userCredential.value.user!.email);
+                                final user = userCredential.value.user;
+                                final String email = user?.email ?? '';
+                                final String firstName =
+                                    user?.displayName?.split(' ')[0] ?? '';
+                                final String lastName =
+                                    user?.displayName?.split(' ').last ?? '';
+                                final String userID = user?.uid ?? '';
+                                final String profilePictureURL =
+                                    user?.photoURL ?? '';
+                                final String appIdentifier =
+                                    'com.yourcompany.yourapp';
+                                final UserModel userModel = UserModel(
+                                  email: email,
+                                  firstName: firstName,
+                                  lastName: lastName,
+                                  userID: userID,
+                                  profilePictureURL: profilePictureURL,
+                                );
+                                await authService
+                                    .saveUserToFirestore(userModel);
                                 Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => HomePage(),
                                   ),
                                 );
+                              } else {
+                                print("giriş yapamadın morukk");
                               }
                             },
                           ),
@@ -195,27 +211,82 @@ class _SignUpFormState extends State<SignUpForm> {
                           height: 50.0,
                           width: 210.0,
                           child: new ElevatedButton.icon(
-                              label: new Text(
-                                'Login with Facebook',
-                                style: new TextStyle(
-                                  color: Colors.white,
-                                ),
+                            label: new Text(
+                              'Login with Facebook',
+                              style: new TextStyle(
+                                color: Colors.white,
                               ),
-                              icon: new Image.asset(
-                                "assets/facebook.png",
-                                width: 24.0,
-                                height: 24.0,
-                              ),
-                              // icon: const Icon(Icons.adjust, size: 28.0,color: Colors.white),
+                            ),
+                            icon: new Image.asset(
+                              "assets/facebook.png",
+                              width: 24.0,
+                              height: 24.0,
+                            ),
+                            onPressed: () async {
+                              // final LoginResult result =
+                              //     await FacebookAuth.instance.login();
+                              // if (result.status == LoginStatus.success) {
+                              //   final AccessToken accessToken =
+                              //       result.accessToken!;
+                              //   final userData = await FacebookAuth.instance
+                              //       .getUserData(
+                              //           fields:
+                              //               "email,first_name,last_name,picture.width(200)");
+                              //   final User user = User(
+                              //     email: userData['email'] ?? '',
+                              //     firstName: userData['first_name'] ?? '',
+                              //     lastName: userData['last_name'] ?? '',
+                              //     profilePictureURL:
+                              //         userData['picture']['data']['url'] ?? '',
+                              //   );
+                              //   await authService.saveUserToFirestore(user);
+                              //   Navigator.pushReplacement(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //       builder: (context) => HomePage(),
+                              //     ),
+                              //   );
+                              // } else {
+                              //   print(result.status);
+                              //   print(result.message);
+                              // }
 
-                              onPressed: () async {
-                                //TODO: Burada yönlendirme işlemin yapacaksın ana sayfaya
-                                final LoginResult result =
-                                    await FacebookAuth.instance.login();
-                                if (result.status == LoginStatus.success) {
-                                  // you are logged
-                                  final AccessToken accessToken =
-                                      result.accessToken!;
+                              final LoginResult result =
+                                  await FacebookAuth.instance.login();
+                              if (result.status == LoginStatus.success) {
+                                final AccessToken accessToken =
+                                    result.accessToken!;
+
+                                // Firebase'e Facebook Token ile giriş yap
+                                final OAuthCredential credential =
+                                    FacebookAuthProvider.credential(
+                                        accessToken.tokenString);
+
+                                final UserCredential authResult =
+                                    await FirebaseAuth.instance
+                                        .signInWithCredential(credential);
+                                final User? firebaseUser = authResult.user;
+
+                                if (firebaseUser != null) {
+                                  final userData = await FacebookAuth.instance
+                                      .getUserData(
+                                          fields:
+                                              "email,first_name,last_name,picture.width(200)");
+
+                                  // Kullanıcı bilgilerini al
+                                  final UserModel user = UserModel(
+                                    email: userData['email'] ?? '',
+                                    firstName: userData['first_name'] ?? '',
+                                    lastName: userData['last_name'] ?? '',
+                                    profilePictureURL: userData['picture']
+                                            ['data']['url'] ??
+                                        '',
+                                  );
+
+                                  // Firestore'a kaydet
+                                  await authService.saveUserToFirestore(user);
+
+                                  // Giriş başarılı, HomePage'e yönlendir
                                   Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
@@ -223,10 +294,14 @@ class _SignUpFormState extends State<SignUpForm> {
                                     ),
                                   );
                                 } else {
-                                  print(result.status);
-                                  print(result.message);
+                                  print("Firebase Authentication başarısız");
                                 }
-                              }),
+                              } else {
+                                print(result.status);
+                                print(result.message);
+                              }
+                            },
+                          ),
                         ),
                       ],
                     ),
